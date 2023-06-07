@@ -1,0 +1,10 @@
+.btn{
+    width: 80px;
+    margin-right: 5px;
+}
+
+@media screen and (max-width: 900px) {
+    .btn{
+        width: 60px;
+    }
+}

@@ -1,0 +1,46 @@
+.main-container{
+  background-color: #2c589e;
+  padding: 10px;  
+  font-family: 'Oswald',sans-serif;
+  font-size: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container {
+  flex: 1 1 auto;
+  margin-right: 10px;
+  margin-left: 5%;
+}
+
+.searchbar-container {
+  flex: 2 2 auto;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.profile-container {
+  flex: 0 0 auto;
+  margin-right: 5%;
+}
+
+.link{
+  color: white;
+  padding: 10px;
+  text-decoration: none;  
+}
+
+.link:hover {
+  font-weight: bolder;
+  color: #219ebc;
+}
+
+.active {
+  text-decoration: overline;
+}
+
+
