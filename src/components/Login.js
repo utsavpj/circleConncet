@@ -3,6 +3,7 @@ import Signup from './Signup';
 import '../style/login.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../Store/AuthActions';
+import Logo from './Login-logo';
 
 
 function Login() {
@@ -10,7 +11,6 @@ function Login() {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState(''); 
   const [showLogin,setShowLogin] = useState(true);
-  const [showSignup,setShowSignup] =useState(false);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
@@ -20,15 +20,17 @@ function Login() {
   } 
 
   const handleClick = () => {
-    setShowSignup(true);
     setShowLogin(false);
   }
   return (
     <>
     {showLogin &&
     <div className='form-container'>   
-    
+  
     <form onSubmit={handleLogin}>
+    <div className="logo-container">
+    <Logo/>
+    </div>
     <h1>LOG IN</h1>
     {error && <p>{error}</p>}
     <input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} required/>
@@ -39,7 +41,7 @@ function Login() {
     </form>
     </div> 
     }
-    {showSignup && <Signup/>}
+    {!showLogin && <Signup/>}
      </>
   )
 }

@@ -1,0 +1,27 @@
+.message {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .message-author {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .message-timestamp {
+    color: #666;
+  }
+  
+  .message-content {
+    color: #555;
+  }

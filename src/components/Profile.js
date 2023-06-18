@@ -1,20 +1,38 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { logout } from '../Store/AuthActions';
+import React, { useEffect, useState } from 'react'
+import { getUsers } from '../Store/AuthActions';
+
 
 function Profile() {
-  const user = useSelector(state => state.auth.user);
-  const dispatch = useDispatch()
+  const [users, setUsers] = useState([]);
 
-  const handleLogout = () =>{
-    dispatch(logout())
-  } 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const usersData = await getUsers();
+        setUsers(usersData);
+      } catch (error) {
+        console.error('Error getting users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   return (
     <div>
-    {user.email}
-    <button onClick={handleLogout}>LOG OUT</button>
+      <h2>User Details</h2>
+      {users.map((user) => (
+        <div key={user.id}>
+          <h3>{user.name}</h3>
+          <p>Username: {user.username}</p>
+          <p>Date of Birth: {user.dob}</p>
+          <p>Email: {user.email}</p>
+          <p>Password: {user.password}</p>
+        </div>
+      ))}
     </div>
-  )
-}
+  );
+};
+
 
 export default Profile
