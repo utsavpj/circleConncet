@@ -1,30 +1,29 @@
 import React, { useState } from 'react'
-import Signup from './Signup';
 import '../style/login.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../Store/AuthActions';
 import Logo from './Login-logo';
+import { Link , useHistory, useNavigate} from 'react-router-dom';
 
 
 function Login() {
 
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState(''); 
-  const [showLogin,setShowLogin] = useState(true);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
+  const navigate = useNavigate();
   const handleLogin = (event) => {
     event.preventDefault();
-    dispatch(login(email,password))
+    dispatch(login(email,password)).then(()=>{
+      navigate('/')
+    })
+
   } 
 
-  const handleClick = () => {
-    setShowLogin(false);
-  }
   return (
     <>
-    {showLogin &&
     <div className='form-container'>   
   
     <form onSubmit={handleLogin}>
@@ -35,13 +34,12 @@ function Login() {
     {error && <p>{error}</p>}
     <input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} required/>
     <input type='password' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} required/>
-    <button className='button' type='submit' disabled={loading}>Login</button>
+    <button className='button' type='submit' disabled={loading}>LOGIN</button>
     <p>New User?</p>
-    <a href='#' onClick={handleClick}>Create an account</a>
+    <Link to="/register">Register</Link>
+    <Link to="/reset">Forgot password?</Link>
     </form>
     </div> 
-    }
-    {!showLogin && <Signup/>}
      </>
   )
 }

@@ -1,6 +1,6 @@
 .home-container {
     display: grid;
-    grid-template-columns: 15% 65% 20%;
+    grid-template-columns: 20% 55% 25%;
     width: 100% !important;
     height: 100vh;
     overflow: hidden;
@@ -28,3 +28,10 @@
     grid-column: 3;
   }
  
+
+  @media(max-width: 800px){
+    .home-container {
+    display:grid;
+    grid-template-columns: 15% 50% 35%;
+    }
+  }

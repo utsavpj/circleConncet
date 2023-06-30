@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { register } from "../Store/AuthActions";
 import Login from "./Login";
 import Logo from "./Login-logo";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const[username,setUsername] = useState("");
@@ -15,9 +16,13 @@ function Signup() {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
+  const navigate = useNavigate();
   const handleSignup = (event) => {
     event.preventDefault();
-    dispatch(register(email, password,username,name,dob));
+    dispatch(register(email, password,username,name,dob)).then(() => {
+      navigate("/")
+      console.log("dispatch");
+    });
     
     setEmail('')
     setPassword('')

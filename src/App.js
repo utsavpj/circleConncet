@@ -1,18 +1,16 @@
-import Login from './components/Login';
-import { useSelector } from 'react-redux';
+import { Provider,useSelector } from 'react-redux';
 import RouteComponent from './components/RouteComponent';
-import Notification from './components/Notification';
+import store from './Store/Store'; 
+
 
 
 function App() {
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   return (
     <div className="App">
-    {!isLoggedIn && <Login/>}
-    {isLoggedIn && 
-    <RouteComponent/>
+    <Provider store={store}>
+        <RouteComponent />
+    </Provider>
     
-    }
     </div>
   );
 }

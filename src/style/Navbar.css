@@ -10,6 +10,7 @@
   align-items: center;
 }
 
+
 .logo-container {
   flex-grow: 1;
   width: 350px;
@@ -48,6 +49,7 @@
 .custom-dropdown-toggle{
   font-family: 'Poppins';
   font-size: 2rem;
+  width: fit-content;
 }
 
 .profile-link{
@@ -61,7 +63,41 @@
 }
 
 .active {
-  text-decoration: overline;
+  text-decoration-line: underline;
+  text-decoration-color: teal;
+  text-decoration-thickness: 4px;  
 }
+
+@media only screen and (max-width: 768px) {
+  /* Adjustments for screens smaller than 768px wide */
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .logo-container {
+    width: 100%;
+    height: auto;
+    margin: 5px 0;
+  }
+
+  .searchbar-container {
+    margin: 10px 0;
+  }
+
+  .profile-container {
+    margin-right: 0;
+  }
+
+  .logo {
+    width: 100%;
+    height: auto;
+  }
+
+  .custom-dropdown-toggle {
+    font-size: 1.5rem;
+  }
+}
+
 
 

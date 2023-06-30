@@ -1,0 +1,126 @@
+.post-uploader-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+.upload-container{
+  background-color: #2c589e;
+  width: 250px;
+  height: 60px;
+  border-radius: 20px;
+  text-align: center;
+  margin: auto auto;
+  font-size: 1.5rem;
+  color: white;
+}
+.upload-container:hover{
+  background-color: teal;
+  color: white;
+  font-weight: bold;
+}
+.upload-input{
+  margin-top: 10px;
+  text-align: center;
+  font-family: 'Poppins';
+  padding: 2px;
+}
+
+.fa-solid {
+  margin-right: 10px;
+}
+
+.fancy-h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  background-image: linear-gradient(to bottom left, teal, #2c589e);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  }
+
+  .fancy-h3{
+    position: absolute;
+  }
+  
+  .fancy-h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background-color: teal;
+    animation: lineAnimation 1s linear;
+  }
+  
+  @keyframes lineAnimation {
+    0% {
+      transform: scaleX(0);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+  
+
+
+  .post-uploader-container h3 {
+    margin-bottom: 10px;
+    text-align: left;
+    margin-left: 20px;
+  }
+  
+  .post-uploader-container .selected-image {
+    width: 50%;
+    height: 50%;
+    object-fit:cover;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border: 1px solid rgba(117, 115, 115, 0.8);
+    box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .post-uploader-container input[type="file"] {
+    margin-bottom: 10px;
+    margin-left: 5px;
+  }
+  
+  .post-uploader-container input[type="text"] {
+    min-width: 500px;
+    padding: 20px 0;
+    padding-left: 15px;
+    margin-top: 10px;
+    outline: none;
+    background-color: whitesmoke;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+    font-family: 'Poppins';
+    border-radius: 10px;
+    margin-bottom: 5px !important;
+    font-size: 1.2rem;
+  }
+  
+  .post-uploader-container button {
+    padding: 17px 30px;
+    margin-top: 10px;
+    background: #2c589e;
+    font-family: 'poppins';
+    border: none;
+    color: white;
+    font-size: 1.3rem;
+    font-family: 'Inter';
+    border-radius: 4px;
+    text-align: center;
+    cursor:pointer;
+  }
+  
+  .post-uploader-container button:hover{
+    background-color: teal;
+    color: white;
+    font-weight: bold;
+  } 
+  .post-uploader-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }

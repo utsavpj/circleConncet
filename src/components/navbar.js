@@ -1,16 +1,39 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import Searchbar from "./Searchbar";
 import "../style/Navbar.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { logout } from '../Store/AuthActions';
+import { getUsers, logout } from '../Store/AuthActions';
 import { useDispatch} from "react-redux";
+import { useEffect, useState } from "react";
+import { auth } from "../Firebase";
 
 function Navbar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [user, setUsers] = useState({});
+  const currentUserID = auth.currentUser.uid
+  console.log(currentUserID)
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const userData = await getUsers(currentUserID);
+        setUsers(userData);
+        console.log(userData)
+      } catch (error) {
+        console.error('Error getting user:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleLogout = () => {
-    dispatch(logout())
+    dispatch(logout()).then(() => {
+      navigate("/")
+    })
   }
   return (
     <>
@@ -33,17 +56,17 @@ function Navbar() {
           <div className="profile-container">
           <Dropdown>
           <Dropdown.Toggle className="custom-dropdown-toggle" variant="success">
-            Profile
+            Hello there, {user.username}!
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item href="#">
-            <NavLink className={({ isActive }) => (isActive ? "active profile-link" : "profile-link")} to="/profile">Profile</NavLink>                
+            <NavLink className={({ isActive }) => (isActive ? "active profile-link" : "profile-link")} to="/profile">PROFILE</NavLink>                
             </Dropdown.Item>
             <Dropdown.Item href="#">
-            <NavLink className={({ isActive }) => (isActive ? "active profile-link" : "profile-link")} to="/setting">Settings</NavLink>
+            <NavLink className={({ isActive }) => (isActive ? "active profile-link" : "profile-link")} to="/setting">SETTINGS</NavLink>
             </Dropdown.Item>
             <Dropdown.Item onClick={handleLogout} className={({ isActive }) => (isActive ? "active profile-link" : "profile-link")}>
-              Log Out
+              LOG OUT <i class="fa-solid fa-right-from-bracket"></i>
             </Dropdown.Item>
           </Dropdown.Menu>
           </Dropdown>
@@ -55,19 +78,19 @@ function Navbar() {
             className={({ isActive }) => (isActive ? "active link" : "link")}
             to="/"
           >
-            Feed
+            HOME
           </NavLink>
           <NavLink
             className={({ isActive }) => (isActive ? "active link" : "link")}
             to="/post"
           >
-            Post
+            POST
           </NavLink>
           <NavLink
             className={({ isActive }) => (isActive ? "active link" : "link")}
             to="/messages"
           >
-            Messages
+            MESSAGES
           </NavLink>
         </div>
       </div>

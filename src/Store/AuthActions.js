@@ -1,7 +1,7 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import  {auth,db} from '../Firebase'
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import  {auth,database,db} from '../Firebase';
 import  { setLoading, setUser, setError, clearError, logoutSuccess }  from './Auth-slice';
+import { child, get, ref, set } from 'firebase/database';
 
 
 export const register = (email, password,username,name,dob) => async (dispatch) => {
@@ -15,28 +15,25 @@ export const register = (email, password,username,name,dob) => async (dispatch) 
 
     await updateProfile(user,{displayName:name});
 
-    addDoc(collection(db, "users"), {
-      username:username,
-      name:name,
-      dob:dob,
-      email:email,
-      password:password
-      
-    })
-    .then(() => {
-      alert('Message submitted 👍' );
-    })
-    .catch((error) => {
-      alert(error.message);
+    await set(ref(database,'users/' + user.uid), {
+      email: user.email,
+      uid: user.uid,
+      name: user.displayName,
+      username: username,
+      password: password,
+      dob: dob,
     });
+  
 
-    dispatch(setUser(user));
-    dispatch(setLoading(false));
-  } catch (error) {
-    dispatch(setError(error.message));
-    dispatch(setLoading(false));
+    dispatch(setUser(user))
+    
+  } catch (err) {
+    dispatch(setError(err.message));
+  } finally{
+    dispatch(setLoading(false))
   }
 };
+
   
   export const login = (email, password) => async (dispatch) => {
     try {
@@ -69,13 +66,38 @@ export const register = (email, password,username,name,dob) => async (dispatch) 
     }
   };
 
-  export const getUsers = async () => {
+  export const getUsers = async (userId) => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'users'));
-      const users = querySnapshot.docs.map((doc) => doc.data());
-      return users;
+      const dbRef = ref(database);
+      const usersData = {};
+  
+      // Retrieve users data from the "users" node in the Realtime Database
+      const snapshot = await get(child(dbRef, `users/${userId}`));
+  
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          const userId = childSnapshot.key;
+          const userData = childSnapshot.val();
+          usersData[userId] = userData;
+        });
+      } else {
+        console.log("No data available");
+      }
+  
+  
+      return usersData;
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error("Error fetching user:", error);
       throw error;
+    }
+  };
+
+ export const sendPasswordReset = async (email) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset link sent!");
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
     }
   };
