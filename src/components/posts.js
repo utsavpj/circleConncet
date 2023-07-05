@@ -1,13 +1,22 @@
 import React, { useState } from 'react'
 import '../style/Posts.css'
+import { postPhoto } from '../Store/Post-actions';
+import { auth } from '../Firebase';
 
 function Posts() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [caption, setCaption] = useState('');
+  const userId = auth.currentUser.uid;
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    setSelectedImage(URL.createObjectURL(file));
+    const reader = new FileReader()
+
+    reader.onload = (e) => {
+      setSelectedImage(e.target.result);
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const handleCaptionChange = (event) => {
@@ -15,10 +24,8 @@ function Posts() {
   };
 
   const handlePost = () => {
-    // Here you can perform the necessary logic to post the image with the caption
-    // For example, you can send the image file and caption to a server using an API request.
-
-    // Reset the component state after posting
+    postPhoto(userId,selectedImage,caption)
+    console.log(selectedImage)
     setSelectedImage(null);
     setCaption('');
   };
@@ -32,7 +39,7 @@ function Posts() {
       <div className='upload-container'>
       <label className="upload-input">
       <i class="fa-solid fa-cloud-arrow-up"></i>Upload Photo
-      <input id="upload-input" type="file" style={{ display: 'none' }} accept="image/*" onChange={handleImageChange}/>
+      <input id="upload-input" type="file" style={{ display: 'none' }} accept="image/jpeg, image/png, image/heic, image/jpg" onChange={handleImageChange}/>
       </label>
       </div>
       <br />

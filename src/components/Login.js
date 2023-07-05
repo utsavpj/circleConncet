@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../Store/AuthActions';
 import Logo from './Login-logo';
 import { Link , useHistory, useNavigate} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 
 function Login() {
@@ -25,13 +26,12 @@ function Login() {
   return (
     <>
     <div className='form-container'>   
-  
     <form onSubmit={handleLogin}>
     <div className="logo-container">
     <Logo/>
     </div>
     <h1>LOG IN</h1>
-    {error && <p>{error}</p>}
+    
     <input type='email' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} required/>
     <input type='password' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} required/>
     <button className='button' type='submit' disabled={loading}>LOGIN</button>
@@ -39,6 +39,7 @@ function Login() {
     <Link to="/register">Register</Link>
     <Link to="/reset">Forgot password?</Link>
     </form>
+    {error && <p className="error-msg">{error}</p>}
     </div> 
      </>
   )

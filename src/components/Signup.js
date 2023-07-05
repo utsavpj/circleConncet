@@ -19,7 +19,7 @@ function Signup() {
   const navigate = useNavigate();
   const handleSignup = (event) => {
     event.preventDefault();
-    dispatch(register(email, password,username,name,dob)).then(() => {
+    dispatch(register(email, password,username,name,dob,selectedPhoto)).then(() => {
       navigate("/")
       console.log("dispatch");
     });
@@ -33,8 +33,22 @@ function Signup() {
 
   const handleGoBack = (event) => {
     event.preventDefault();
-    setShowLogin(true);
+    navigate("/")
   }
+
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      setSelectedPhoto(e.target.result);
+    };
+
+    reader.readAsDataURL(file);
+  };
+
   return (
     <>{!showLogin &&
       <div className="form-container">
@@ -44,7 +58,33 @@ function Signup() {
       <Logo/>
       </div>
       <h2>CREATE AN ACCOUNT</h2>
-      {error && <p>{error}</p>}
+      
+        <div className="profile-image">
+      {selectedPhoto ? (
+        <img
+          className="img"
+          src={selectedPhoto}
+          alt="Selected"
+        />
+      ) : (
+        
+        <label htmlFor="upload-input" style={{ cursor: 'pointer' }}>
+          <img
+            src="/assets/upload-photo.png"
+            alt="Upload"
+            className="img upload"
+          />
+          <input
+            id="upload-input"
+            type="file"
+            accept="image/*"
+            onChange={handleFileSelect}
+            style={{ display: 'none' }}
+          />
+          {!selectedPhoto && <p className="title">Upload a profile picture</p>}
+        </label>
+      )}
+    </div>
         <input
           type="text"
           placeholder="User Name"
@@ -84,8 +124,9 @@ function Signup() {
         <button className='button' type="submit" disabled={loading}>Signup</button>
         <p className="goback" onClick={handleGoBack}><i class="fa-solid fa-arrow-left"></i>  Back to Log In</p>
       </form>
-      
+      {error && <p className="error-msg">{error}</p>}
       </div>
+      
     }
     {showLogin && <Login/>}
     </>

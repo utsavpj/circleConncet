@@ -14,14 +14,12 @@ function Navbar() {
 
   const [user, setUsers] = useState({});
   const currentUserID = auth.currentUser.uid
-  console.log(currentUserID)
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const userData = await getUsers(currentUserID);
         setUsers(userData);
-        console.log(userData)
       } catch (error) {
         console.error('Error getting user:', error);
       }

@@ -4,10 +4,11 @@
   justify-content: center;
   align-items: center;
   font-size: 'Poppins';
-  height: 90vh;
+  height: 100vh;
 }
 
 .logo-container {
+  position: relative;
   align-self: center;
 }
 
@@ -23,6 +24,41 @@ h1 {
   margin-bottom: 15px;
   padding-bottom: 10px;
   letter-spacing: -1px;
+}
+
+.profile-image{
+  justify-self: center;
+  text-align: center;
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 2px solid rgb(93, 165, 220);
+}
+
+.img{
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  object-fit:fill;
+  border-radius: 50%;
+}
+
+.upload{
+  width: 70%;
+  height: 100%;
+  margin-top: 10px;
+}
+
+.title {
+  width: 70%;
+  height: 35%;
+  justify-self: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: -1px !important;
+  font-size: 0.9rem;
 }
 
 input {
@@ -98,6 +134,10 @@ p {
   margin-top: 20px !important;
   font-family: 'Poppins';
   font-size: 1.2rem;
+}
+
+.error-msg{
+  color: rgb(215, 76, 41);
 }
 
 .goback {

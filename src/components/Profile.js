@@ -2,94 +2,73 @@ import React, { useEffect, useState } from 'react'
 import { getUsers } from '../Store/AuthActions';
 import { auth } from '../Firebase';
 import "../style/Profile.css"
+import { getUserPosts } from '../Store/Post-actions';
 
 function Profile() {
-  const [users, setUsers] = useState({});
+  const [user, setUsers] = useState({});
+  const [posts,setPosts] = useState([])
   const currentUserID = auth.currentUser.uid
-  console.log(currentUserID)
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const userData = await getUsers(currentUserID);
         setUsers(userData);
-        console.log(userData)
       } catch (error) {
         console.error('Error getting user:', error);
       }
     };
 
-    fetchUsers();
-  }, []);
+    const fetchUserPosts = async() => {
+      try{
+        const userPosts = await getUserPosts(currentUserID);
+        setPosts(userPosts);
+      } catch(error){
+        console.error('Error while fetching user posts: ',error)
+      }
+    }
 
-  const user = {
-    name: 'John Doe',
-    username: 'johndoe',
-    birthday: 'January 1, 1990',
-    email: 'johndoe@example.com',
-    profilePicture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3WEmfJCME77ZGymWrlJkXRv5bWg9QQmQEzw&usqp=CAU',
-    posts: [
-      {
-        id: 1,
-        content: 'Post 1',
-        date: 'June 1, 2023',
-        photo: 'path/to/post-photo.jpg',
-        likes: 10,
-        comments: 5,
-        views: 100,
-      },
-      {
-        id: 2,
-        content: 'Post 2',
-        date: 'June 2, 2023',
-        photo: 'path/to/post-photo.jpg',
-        likes: 20,
-        comments: 10,
-        views: 200,
-      },
-      {
-        id: 3,
-        content: 'Post 3',
-        date: 'June 3, 2023',
-        photo: 'path/to/post-photo.jpg',
-        likes: 30,
-        comments: 15,
-        views: 300,
-      },
-    ],
-  };
+    fetchUsers();
+    fetchUserPosts();
+  }, [currentUserID]);
+
+
+
 
   return (
     <div className="profile">
       <div className="profile-card">
+      <h2>Profile</h2>
         <div className="profile-picture">
-          <img src={user.profilePicture} alt="Profile" />
+          <img src={user.profilePic} alt="Profile" />
         </div>
         <div className="profile-details">
           <h2>{user.name}</h2>
           <p>@{user.username}</p>
-          <p>Birthday: {user.birthday}</p>
+          <p>Birthday: {user.dob}</p>
           <p>Email: {user.email}</p>
         </div>
       </div>
       <div className="posts-card">
-        <h3>Posts</h3>
-        {user.posts.map((post) => (
-          <div key={post.id} className="post">
+        <h2>Posts</h2>
+        {posts.map((post) => (
+          <div className="post">
             <div className="post-header">
               <div className="post-user-info">
-                <h4>{user.name}</h4>
-                <p>{post.date}</p>
+                <h3>{user.name}</h3>
+                <p>{post.time}</p>
               </div>
               <div className="post-actions">
-                <span>{post.likes} Likes</span>
-                <span>{post.comments} Comments</span>
-                <span>{post.views} Views</span>
+                <span className='post-likes'>{post.likes} <i className='fas fa-heart'/></span>
+                <span className='post-comments'>{post.comments} <i className='fas fa-comment'/></span>
+                <span className='post-views'>{post.views} <i className='fas fa-eye'/></span>
               </div>
             </div>
             <div className="post-content">
               <p>{post.content}</p>
+              <div className='post-photo-container'>
               <img src={post.photo} alt="Post" />
+              </div>
             </div>
           </div>
         ))}
