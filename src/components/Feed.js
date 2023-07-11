@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import "../style/Feed.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import { getUsers } from "../Store/AuthActions";
-import { updateLikeActions } from "../Store/Post-actions";
+import { getPostComments, saveComment, updateCommentActions, updateLikeActions, updateViewActions } from "../Store/Post-actions";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleLike } from "../Store/Post-slice";
+import { auth } from "../Firebase";
+import { current } from "@reduxjs/toolkit";
 
-const Feed = ({ uid, content, photo, time, likes, comments, views }) => {
+const Feed = ({ uid, content, photo, time, likes, views,postId }) => {
+  const currentUserID = auth.currentUser.uid
   //For comments
   const [commentClicked, setCommentClicked] = useState(false);
   const [commentInput, setCommentInput] = useState('');
-  const [v_comments, setComments] = useState([]);
-  const [commentCounter, setCommentCounter] = useState(v_comments.length);
+  const [comments, setComments] = useState([]);
+  const [commentCounter, setCommentCounter] = useState();
 
   //For likes
   const [likeCounter, setLikeCounter] = useState(likes);
@@ -22,9 +25,13 @@ const Feed = ({ uid, content, photo, time, likes, comments, views }) => {
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const likeStatus = useSelector(
-    (state) => state.post.likeStatus[uid]?.[uid + content]
+    (state) => state.post.likeStatus[currentUserID]?.[uid+postId]
   );
 
+
+  const [userProfiles, setUserProfiles] = useState({});
+
+  //Fetch current user details
   useEffect(() => {
     setIsMounted(true);
 
@@ -39,19 +46,51 @@ const Feed = ({ uid, content, photo, time, likes, comments, views }) => {
     fetchUsers();
   }, [user]);
 
+  //Comment function
   useEffect(() => {
-    // This effect will be triggered whenever `likeCounter` changes
-    // Call `updateLikeActions` here to ensure it has the latest `likeCounter` value
-    updateLikeActions(uid, content, likeCounter, viewCounter);
-  }, [likeCounter, viewCounter]);
+  const getUserComments = async () => {
+      try {
+        const commentData = await getPostComments(uid,postId);
+        setComments(commentData)
+        setCommentCounter(commentData.length)
+      } catch (error) {
+        console.error("Error getting user:", error);
+      }
+    };
+  getUserComments();
+}, [comments]);
+
+//View function
+useEffect(() => {
+  const updateView = async () => {
+    try {
+      setViewCounter((prevViews) => prevViews + 1); // Increment the viewCounter state
+
+      // Update the view count in the database
+      await updateViewActions(uid, postId, viewCounter + 1);
+    } catch (error) {
+      console.error("Error updating view count:", error);
+    }
+  };
+
+  if (isMounted) {
+    updateView();
+  }
+
+  return () => {
+    setIsMounted(false); // Set isMounted to false when the component unmounts
+  };
+}, [ currentUserID,uid, postId]);
+
+
 
   const handleLike = () => {
-    if (!likeStatus) {
-      setLikeCounter(likeCounter + 1);
-      dispatch(toggleLike({ uid, postId: uid + content }));
-      updateLikeActions(uid, content, likeCounter, viewCounter);
+    if(!likeStatus){
+      const updatedLikeCounter = likeCounter + 1;
+      setLikeCounter(updatedLikeCounter);
+      dispatch(toggleLike({ currentUserID, postId: uid + postId }));
+      updateLikeActions(uid, postId, updatedLikeCounter);
     }
-    console.log(likeStatus);
   };
 
   const handleComment = () => {
@@ -61,23 +100,38 @@ const Feed = ({ uid, content, photo, time, likes, comments, views }) => {
   const handleAddComment = () => {
     if (commentInput) {
       const newComment = {
-        id: v_comments.length + 1,
-        content: commentInput,
+        userId: currentUserID,
+        postId: postId,
+        comment_content: commentInput,
       };
 
       setComments([...comments, newComment]);
       setCommentInput('');
       setCommentCounter(commentCounter + 1);
     }
+
+    saveComment(uid,currentUserID,postId,commentInput)
+    
   };
 
+  useEffect(() => {
+    const fetchUserProfiles = async () => {
+      try {
+        const profiles = {};
+        for (const comment of comments) {
+          if (!userProfiles[comment.uid]) {
+            profiles[comment.uid] = await getUsers(comment.uid);
+          }
+        }
+        setUserProfiles((prevState) => ({ ...prevState, ...profiles }));
+      } catch (error) {
+        console.error("Error getting user profiles:", error);
+      }
+    };
+  
+    fetchUserProfiles();
+  }, [comments]);
 
-
-
-
-  const handleViews = () => {
-
-  };
   return (
     <div className="feed-card container">
       <div className="feed-card-header">
@@ -109,11 +163,12 @@ const Feed = ({ uid, content, photo, time, likes, comments, views }) => {
           ></i>{" "}
           {commentCounter}
         </button>
-        <button className="action-btn feed-card-views" onClick={handleViews}>
+        <button className="action-btn feed-card-views">
           <i className={"fa-solid fa-eye"}></i> {viewCounter}
         </button>
       </div>
       {commentClicked && (
+        <div>
         <div className="comment-container">
           <input
             type="text"
@@ -124,10 +179,17 @@ const Feed = ({ uid, content, photo, time, likes, comments, views }) => {
           />
           <button className="comment-button" onClick={handleAddComment}>Post</button>
         </div>
+        {comments.map((comment) => 
+          <div className="comment-box">
+          <img className="profile-pic" src={userProfiles[comment.uid]?.profilePic} alt={comment.uid} />
+          <p className="comment-content">{comment.content}</p>
+          </div>
+        )}
+        </div>
       )}
-      {v_comments.map((comment) => (
-        <p key={comment.id}>{comment.content}</p>
-      ))}
+      
+
+
     </div>
   );
 };

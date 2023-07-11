@@ -3,15 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 const postSlice = createSlice({
     name: 'post',
     initialState: {
-      likeStatus: {}, // Store the like status for each post
+      likeStatus: {},
+      commentStatus:{}, // Store the like status for each post
     },
     reducers: {
       toggleLike: (state, action) => {
-        const {uid,postId}  = action.payload;
-        if (!state.likeStatus[uid]) {
-          state.likeStatus[uid] = {};
+        const {currentUserID,postId}  = action.payload;
+        if (!state.likeStatus[currentUserID]) {
+          state.likeStatus[currentUserID] = {};
         }
-        state.likeStatus[uid][postId] = !state.likeStatus[uid][postId];
+        state.likeStatus[currentUserID][postId] = !state.likeStatus[currentUserID][postId];
       },
     },
   });

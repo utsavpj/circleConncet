@@ -41,7 +41,7 @@ function Home() {
                   time={value.time}
                   likes={value.likes}
                   views={value.views}
-                  comments={value.comments}
+                  postId={value.postId}
                 />
               )
           )

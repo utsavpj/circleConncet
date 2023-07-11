@@ -1,6 +1,6 @@
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { database, storage } from "../Firebase";
-import { child, get, set, ref as sref, update } from "firebase/database";
+import { child, get, push, set, ref as sref, update } from "firebase/database";
 import { toast } from "react-toastify";
 
 export const postPhoto = async (
@@ -8,13 +8,13 @@ export const postPhoto = async (
   photo,
   content,
   likes = 0,
-  comments = 0,
   views = 0
 ) => {
   try {
     var cleanedContent = content.replace(/[^\w\s]/gi, '').replace(/\s+/g, '');
     const fileName = `${userId}_${cleanedContent}`;
-    const storageRef = ref(storage, `posts/${userId}/${fileName}`);
+    const postId = generatePostId();
+    const storageRef = ref(storage, `posts/${userId}/${postId}`);
     await uploadString(storageRef, photo, "data_url");
 
     // Get the download URL of the uploaded photo
@@ -23,13 +23,13 @@ export const postPhoto = async (
     const date = new Date(timestamp);
     const formatteddate = date.toLocaleString(date);
 
-    await set(sref(database, `posts/${userId}/${fileName}`), {
+    await set(sref(database, `posts/${userId}/${postId}`), {
       uid: userId,
+      postId: postId,
       photo: photoUrl,
       content: content,
       time: formatteddate,
       likes: likes,
-      comments: comments,
       views: views,
     });
 
@@ -91,17 +91,13 @@ export const getAllPosts = async () => {
 
 export const updateLikeActions = async (
   userId,
-  content,
+  postId,
   likes,
-  views
 ) => {
   try {
 
-    var cleanedContent = content.replace(/[^\w\s]/gi, '').replace(/\s+/g, '');
-    const fileName = `${userId}_${cleanedContent}`;
-    await update(sref(database, `posts/${userId}/${fileName}`), {
+    await update(sref(database, `posts/${userId}/${postId}`), {
       likes: likes,
-      views: views,
     });
 
     console.log("Likes updated for: ", userId);
@@ -110,26 +106,64 @@ export const updateLikeActions = async (
   }
 };
 
-export const updateCommentActions = async (
+export const updateViewActions = async (
   userId,
-  content,
-  time,
-  comments,
+  postId,
   views
 ) => {
   try {
-    const formattedDateFromDB = time; // Example formatted date from the database
 
-    // Convert the formatted date back to a Date object
-    const dateFromDB = new Date(formattedDateFromDB);
-
-    const fileName = `${dateFromDB.getTime()}_${content}`;
-
-    await update(sref(database, `posts/${userId}/${fileName}`), {
-      comments: comments,
+    await update(sref(database, `posts/${userId}/${postId}`), {
       views: views,
     });
+
+    console.log("Views updated for: ", userId);
   } catch (error) {
     throw error;
   }
 };
+
+  export const saveComment = async (userid,currentUserID,postId ,commentContent) => {
+    const commentID = generatePostId()
+    try{
+    await set(sref(database, `comments/${userid}/${postId}/${commentID}`), {
+      uid: currentUserID,
+      content: commentContent,      
+    });
+  }
+  catch(error){
+    console.log("Comment not send ",error)
+  }
+  };
+  
+  const generatePostId = () => {
+    const postsRef = sref(database,'posts');
+    const newPostRef = push(postsRef); // Create a new child reference with an auto-generated ID
+    const postId = newPostRef.key; // Get the generated ID
+  
+    return postId;
+  }; 
+
+  export const getPostComments = async (userId,postId) => {
+    try {
+      const dbRef = sref(database);
+      const comments = [];
+  
+      // Retrieve users data from the "users" node in the Realtime Database
+      const snapshot = await get(child(dbRef, `comments/${userId}/${postId}`));
+  
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          const postData = childSnapshot.val();
+          comments.push(postData);
+        });
+      }
+  
+      return comments;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      throw error;
+    }
+  };
+
+

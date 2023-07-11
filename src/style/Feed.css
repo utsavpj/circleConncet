@@ -94,9 +94,6 @@ body {
   color: #0b8c34;
 }
 
-.comment-container{
-
-}
 
 .comment-container {
   margin-top: 10px;
@@ -124,6 +121,32 @@ body {
 .comment-container button:hover {
   color: black;
   background-color: teal;
+}
+
+.comment-box {
+  display: flex;
+  align-items: flex-start;
+  padding: 2px;
+  margin-top: 10px;
+}
+
+.profile-pic {
+  width: 30px;
+  height: 30px;
+  object-fit:fill;
+  border-radius: 50%;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.comment-content {
+  flex: 1;
+  background-color: #d7e9f6;
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 10px;
+  padding-left: 10px;
+  box-shadow: 2px 1px rgba(121, 174, 221, 0.1);
 }
 
 @media screen and (max-width: 768px) {

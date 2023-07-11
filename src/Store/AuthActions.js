@@ -95,8 +95,6 @@ export const register = (email, password,username,name,dob,profilePic) => async 
           const userData = childSnapshot.val();
           usersData[userId] = userData;
         });
-      } else {
-        console.log("No data available");
       }
   
   
