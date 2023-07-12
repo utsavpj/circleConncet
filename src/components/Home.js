@@ -4,6 +4,7 @@ import Feed from "./Feed";
 import Explore from "./Explore";
 import { getAllPosts } from "../Store/Post-actions";
 import { auth } from "../Firebase";
+import Notification from "./Notification";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -25,10 +26,11 @@ function Home() {
   return (
     <div className="home-container">
       <div className="left-container column">
-        <h4>Profile</h4>
+        <h2 className='home-heading'>Notification</h2>
+        <Notification/>
       </div>
       <div className="middle-container column">
-        <h4>Feed</h4>
+        <h2 className='home-heading'>Feed</h2>
         {posts.map((post) =>
           Object.entries(post).map(
             ([key, value]) =>
@@ -48,6 +50,7 @@ function Home() {
         )}
       </div>
       <div className="right-container column">
+      <h2 className='home-heading'>Explore</h2>
         <Explore />
       </div>
     </div>

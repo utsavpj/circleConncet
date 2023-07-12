@@ -32,7 +32,7 @@ function Posts() {
 
   return (
     <div className="post-uploader-container">
-      <h3 className='fancy-h3'>Upload a Photo</h3>
+      <h2 className='home-heading'>Upload a Photo</h2>
       {selectedImage && (
         <img src={selectedImage} alt="Selected" className="selected-image" />
       )}

@@ -5,7 +5,6 @@ function Explore() {
   
   return (
     <div>
-    <h4>Explore</h4>
     <ExploreCard
       imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTALLKSUblGIpEDkjnH7VX6o25SPIvhDGLCqQ&usqp=CAU"
       title="Place"   

@@ -7,9 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleLike } from "../Store/Post-slice";
 import { auth } from "../Firebase";
 import { current } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 const Feed = ({ uid, content, photo, time, likes, views,postId }) => {
   const currentUserID = auth.currentUser.uid
+  const [isAlertShown,setAlertShown] = useState(false)
   //For comments
   const [commentClicked, setCommentClicked] = useState(false);
   const [commentInput, setCommentInput] = useState('');
@@ -132,6 +134,15 @@ useEffect(() => {
     fetchUserProfiles();
   }, [comments]);
 
+  const handleView = () => {
+    if(!isAlertShown){
+    toast.info("View - The total number of times your post was displayed onscreen. This number is an estimate and may not be precise.")
+    setAlertShown(true);
+  }
+    
+  }
+  
+
   return (
     <div className="feed-card container">
       <div className="feed-card-header">
@@ -163,8 +174,8 @@ useEffect(() => {
           ></i>{" "}
           {commentCounter}
         </button>
-        <button className="action-btn feed-card-views">
-          <i className={"fa-solid fa-eye"}></i> {viewCounter}
+        <button className="action-btn feed-card-views" onMouseOverCapture={handleView}>
+          <i className={"fa-solid fa-eye"}></i>{viewCounter}{" "}
         </button>
       </div>
       {commentClicked && (

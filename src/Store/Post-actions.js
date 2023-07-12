@@ -34,6 +34,7 @@ export const postPhoto = async (
     });
 
     toast("Post created successfully");
+    toast.warn("Notification: All posts are public and can be viewed by all users across the platform")
   } catch (error) {
     toast.error("Error while posting photo", error);
     throw error;
