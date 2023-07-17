@@ -38,6 +38,6 @@
   @media(max-width: 800px){
     .home-container {
     display:grid;
-    grid-template-columns: 15% 50% 35%;
+    grid-template-columns: 25% 50% 25%;
     }
   }

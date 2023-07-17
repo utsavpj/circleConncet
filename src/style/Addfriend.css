@@ -1,0 +1,155 @@
+.add-friend-card {
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #a1b5be;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin: 10px 3px;
+  background-color: rgb(247, 248, 252);
+
+}
+
+  .add-friend-card:hover{
+    transform: scale(1.01);
+  }
+
+  .notification-user-details{
+    display: flex;
+  }
+
+  
+  .notification-profile-picture {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: fill;
+    margin-right: 10px;
+    margin-top:5px;
+    border: 1px solid #a4a2a2;
+  }
+  
+  .friend-details h3 {
+    color: #2a2626;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 4px;
+  }
+
+  .senetence{
+    font-size: 14px;
+    color: #797979;
+  }
+  
+  .friend-details p {
+    font-family: 'Ubuntu', sans-serif;
+    color: rgb(61, 58, 58);
+    font-size: 14px;
+    margin-top: 0.1px !important;
+  }
+  
+  .friend-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .friend-request-message{
+    font-size: 0.9rem;
+    font-family: 'Inter',sans-serif;
+    text-align: center;
+    color:#716d6d;
+  }
+  
+  .add-friend-button,
+  .cancel-button, .sent-button {
+    padding: 7px 18px;
+    font-size: 1rem;
+    font-family: 'Poppins',sans-serif;
+    border: none;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .add-friend-button {
+    background-color: #3F72AF;
+    color: white;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+  
+  .cancel-button {
+    margin-top: 5px;
+    background-color:rgb(62, 59, 59);
+    color: white;
+  }
+  .sent-button{
+    border: 1px solid rgb(82, 177, 82);
+    background-color: white;
+    color: black;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+
+  .add-friend-button:hover,
+  .cancel-button:hover{
+    color: black;
+    border: 1px solid rgb(216, 215, 215);
+    background-color: white;
+
+  }
+
+  .sent-button:hover{
+    color: white;
+  }
+  .heading-grow-circle{
+    margin-left: 5px;
+    font-family: 'Oswald',sans-serif;
+    color: #3f5e91;
+    font-size: 1.1rem;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 800px) {
+    .add-friend-card {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px;
+    }
+  
+    .notification-profile-picture {
+      width: 30px;
+      height: 30px;
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  
+    .friend-details h3 {
+      font-size: 18px;
+    }
+  
+    .friend-details p {
+      font-size: 10px;
+    }
+  
+    .friend-actions {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 8px;
+    }
+  
+    .add-friend-button,
+    .cancel-button {
+      font-size: 0.8rem;
+      margin-right: 0;
+      margin-top: 5px;
+    }
+
+    .senetence{
+      font-size: 10px;
+    }
+
+
+  }

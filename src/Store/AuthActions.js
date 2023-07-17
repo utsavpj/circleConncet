@@ -105,6 +105,29 @@ export const register = (email, password,username,name,dob,profilePic) => async 
     }
   };
 
+  export const getAllUsers = async () => {
+    try {
+      const dbRef = sref(database);
+      var usersData = [];
+  
+      // Retrieve users data from the "users" node in the Realtime Database
+      const snapshot = await get(child(dbRef, `users/`));
+  
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          const users = childSnapshot.val();
+          usersData.push(users);
+        });
+      }
+  
+  
+      return usersData;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      throw error;
+    }
+  };
+
  export const sendPasswordReset = async (email) => {
     try {
       await sendPasswordResetEmail(auth, email);

@@ -82,7 +82,7 @@ useEffect(() => {
   return () => {
     setIsMounted(false); // Set isMounted to false when the component unmounts
   };
-}, [ currentUserID,uid, postId]);
+}, [currentUserID,uid, postId]);
 
 
 
