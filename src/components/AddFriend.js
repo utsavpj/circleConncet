@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../style/Addfriend.css";
-import { removeRequest, sendRequest } from "../Store/Request";
+import { cancelRequest, confirmRequest, removeRequest, sendRequest } from "../Store/Request";
 import { auth } from "../Firebase";
 
 function AddFriend(props) {
@@ -9,8 +9,16 @@ function AddFriend(props) {
   const currentUserID = auth.currentUser.uid
   
   //To Accept friend request
-  const handleConfirm = () => {
+  const handleConfirm = (SendUserid) => {
     if(!isAddBtnClicked){
+      const isConnected = confirmRequest(currentUserID, SendUserid);
+
+      if (isConnected) {
+        setTimeout(() => {
+          cancelRequest(currentUserID, SendUserid); // Call removeRequest after 2 seconds
+        }, 2000); // Delay in milliseconds (2 seconds)
+      }
+
         setAddBtnClick(true)
     }
   } 
@@ -23,12 +31,20 @@ function AddFriend(props) {
     }
   } 
 
-  const handleConnectCancel = (SendUserid) => {
-    if(!isAddBtnClicked && !isCancelBtnClicked){
-      removeRequest(currentUserID,SendUserid)
-      }
+  const handleConnectCancel = async(SendUserid) => {
+
+    try {
+      setCancelBtnClick(true); // Start the animation
+      await cancelRequest(currentUserID, SendUserid);
+      // Request successfully removed
+    } catch (error) {
+      // Handle the error if the request removal fails
+      console.error("Error removing request:", error);
+    } finally {
+      setCancelBtnClick(false); // Stop the animation
+    }
+  };
         
-  }
 
   const handleRequestCancel = (SendUserid) => {
     if(isAddBtnClicked){
@@ -69,7 +85,7 @@ function AddFriend(props) {
         </div>
         {props.type === "Confirm" && (
         <div className="friend-actions">
-        <button className={isAddBtnClicked ? "sent-button" : "add-friend-button"} onClick={handleConfirm}>{isAddBtnClicked ? "Connected" : props.type}</button>
+        <button className={isAddBtnClicked ? "sent-button" : "add-friend-button"} onClick={() => handleConfirm(props.uid)}>{isAddBtnClicked ? "Connected" : props.type}</button>
         <button className="cancel-button" onClick={() => handleConnectCancel(props.uid)}>Cancel</button>
         </div>
         )}

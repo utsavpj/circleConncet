@@ -20,6 +20,7 @@ function Notification() {
       }
     };
     fetchUsers();
+
   }, [users]);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ function Notification() {
         {Object.keys(requestedUsers).length > 0 ? Object.keys(requestedUsers).map((uid) => (
           <AddFriend
             key={requestedUsers.uid}
-            uid={requestedUsers.uid}
+            uid={requestedUsers[uid].uid}
             type="Confirm"
             profilePic={requestedUsers[uid].profilePic}
             name={requestedUsers[uid].name}
