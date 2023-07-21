@@ -20,6 +20,9 @@ function Posts() {
   };
 
   const handleCaptionChange = (event) => {
+    if(event.target.value === ''){
+      setCaption("")
+    }
     setCaption(event.target.value);
   };
 
@@ -31,8 +34,10 @@ function Posts() {
   };
 
   return (
+    <div>
+    <h2 className='home-heading'>Upload a Photo</h2>
     <div className="post-uploader-container">
-      <h2 className='home-heading'>Upload a Photo</h2>
+      
       {selectedImage && (
         <img src={selectedImage} alt="Selected" className="selected-image" />
       )}
@@ -50,9 +55,10 @@ function Posts() {
         onChange={handleCaptionChange}
       />
       <br />
-      <button disabled={!selectedImage || !caption} onClick={handlePost}>
+      <button disabled={!selectedImage} onClick={handlePost}>
         Post
       </button>
+    </div>
     </div>
   );
 }

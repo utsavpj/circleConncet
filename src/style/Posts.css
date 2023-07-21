@@ -1,9 +1,13 @@
 .post-uploader-container {
+    padding: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     text-align: center;
     margin-top: 20px;
-  }
+    border: 1px solid #c4c7cb;
+}
 
-.upload-container{
+.upload-container{  
   background-color: #2c589e;
   width: 250px;
   height: 60px;

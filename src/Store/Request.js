@@ -116,8 +116,8 @@ export const confirmRequest = async (currentUserid,SendUserid ) => {
 export const getFriends = async(currentUserid) => {
   try {
     const dbRef = ref(database);
-    const userRequestId = [];
-    var userRequestData = {}
+    const friendId = [];
+    var friendsData = {}
 
     // Retrieve users data from the "users" node in the Realtime Database
     const snapshot = await get(child(dbRef, `friends/${currentUserid}`));
@@ -127,18 +127,18 @@ export const getFriends = async(currentUserid) => {
       snapshot.forEach((childSnapshot) => {
   
         const req = childSnapshot.val();
-        userRequestId.push(req.uid);
+        friendId.push(req.requestId);
       });
     }
-    const userDetailsPromises = userRequestId.map((id) => getUsers(id));
+    const userDetailsPromises = friendId.map((id) => getUsers(id));
     const userDetails = await Promise.all(userDetailsPromises);
 
     userDetails.forEach((userData) => {
       // Add user details to the userRequestData object
-      userRequestData[userData.uid] = userData;
+      friendsData[userData.uid] = userData;
     });
 
-    return userRequestData;
+    return friendsData;
     
     
   } catch (error) {

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import AddFriend from "./AddFriend";
 import { auth } from "../Firebase";
 import { getAllUsers, getUsers } from "../Store/AuthActions";
-import { getRequests } from "../Store/Request";
+import { getFriends, getRequests } from "../Store/Request";
 
 function Notification() {
   const currentUserID = auth.currentUser.uid;
   const [users, setUsers] = useState([]);
   const [requestedUsers, setRequestedUsers] = useState([]);
+  const [friends, setFriends] = useState([])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -27,13 +28,15 @@ function Notification() {
     const fetchRequests = async () => {
       try {
         const reqUsers = await getRequests(currentUserID);
+        const friend = await getFriends(currentUserID);
         setRequestedUsers(reqUsers);
+        setFriends(friend)
       } catch (error) {
         console.error("Error getting user:", error);
       }
     };
     fetchRequests();
-  }, [requestedUsers]);
+  }, [requestedUsers,friends]);
   
 
   return (
@@ -61,8 +64,9 @@ function Notification() {
         </div>
         {users.map((user, index) => {
           const isRequested = Object.keys(requestedUsers).includes(user.uid);
+          const isFriends = Object.keys(friends).includes(user.uid);
           const isCurrentUser = user.uid === currentUserID;
-          if (!isRequested && !isCurrentUser) {
+          if (!isRequested && !isCurrentUser && !isFriends) {
             return (
               <AddFriend
                 key={index}

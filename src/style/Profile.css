@@ -55,6 +55,123 @@
     font-size: 1.2rem;
 }
 
+.friend-card{
+    margin-top: 5px;
+    text-align: center;
+    width: auto;
+    color: white;
+    font-family: 'Inter';
+    border-radius: 15px;
+    height: 50px;
+    border: 1px solid rgb(93, 165, 220);
+    box-shadow: 1px 1px 1px rgb(93, 165, 220);
+    background-color: #156cbd;
+}
+
+.friend-card:hover{
+    background-color: teal;
+    transform: scale(1.02);
+}
+
+.friend-card > h2{
+    margin: auto 0;
+    font-size: 1.3rem;
+}
+
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background to dim the rest of the component */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Make sure the popup appears on top of other elements */
+  }
+  
+  .popup-content {
+    background-color: #ffffff; /* White background */
+    border-radius: 10px; /* Rounded corners (adjust as needed) */
+    padding: 20px;
+    position: relative;
+    max-width: 400px;
+    width: 90%;
+    max-height: 50%;
+    overflow-y: auto;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    background-color: transparent;
+    border: none;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    background-color: transparent;
+    color: rgb(220, 28, 10);
+    cursor: pointer;
+  }
+
+  .popup-heading{
+    font-family: 'Oswald',sans-serif;
+    color: #3f5e91;
+  }
+
+  .friendlist-card {
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #a1b5be;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 10px 3px;
+    background-color: rgb(247, 248, 252);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 1;
+  }
+
+  .friendlist-card-user-details{
+    display: flex;
+  }
+
+  
+  .friendlist-card-profile-picture {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: fill;
+    margin-right: 10px;
+    margin-top:5px;
+    border: 1px solid #a4a2a2;
+  }
+  
+  .friend-details h3 {
+    color: #2a2626;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 4px;
+  }
+
+  .senetence{
+    font-size: 14px;
+    color: #797979;
+  }
+  
+  .friend-details p {
+    font-family: 'Ubuntu', sans-serif;
+    color: rgb(61, 58, 58);
+    font-size: 14px;
+    margin-top: 0.1px !important;
+  }
+  
+
 .posts-card {
     background-color: #ffffff;
     border-radius: 8px;
