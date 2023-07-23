@@ -8,6 +8,7 @@ import { useDispatch} from "react-redux";
 import { useEffect, useState } from "react";
 import { auth } from "../Firebase";
 
+
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ function Navbar() {
           <div className="logo-container">
             <NavLink to="/">
               <img
-                src="/assets/logo.png"
+                src="/assets/logo_home.svg"
                 className="logo"
                 alt="circleConnect"
               ></img>

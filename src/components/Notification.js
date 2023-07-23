@@ -44,7 +44,7 @@ function Notification() {
       <div className="friend-request-container">
       <div>
       <hr></hr>
-      <h4 className="heading-grow-circle">Connect Requests</h4>
+      <h4 className="heading-grow-circle">Connect requests</h4>
       </div>
         {Object.keys(requestedUsers).length > 0 ? Object.keys(requestedUsers).map((uid) => (
           <AddFriend
