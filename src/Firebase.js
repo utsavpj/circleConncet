@@ -13,13 +13,14 @@ import {getStorage} from "firebase/storage"
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyA3YCCMQxEM-4MUb3xqyLJ0xB2yvxKdXPE",
-  authDomain: "circleconnect142.firebaseapp.com",
-  projectId: "circleconnect142",
-  storageBucket: "circleconnect142.appspot.com",
-  messagingSenderId: "215933679648",
-  appId: "1:215933679648:web:cbaa68f3c3ad1fda8ee445",
-  measurementId: "G-9EW2QZDLB7"
+  apiKey: "AIzaSyBimDDuvQkCf_OMUHvZ7NH4rixJObxc3lY",
+  authDomain: "circleconnect2-dcb6a.firebaseapp.com",
+  databaseURL: "https://circleconnect2-dcb6a-default-rtdb.firebaseio.com",
+  projectId: "circleconnect2-dcb6a",
+  storageBucket: "circleconnect2-dcb6a.appspot.com",
+  messagingSenderId: "697216645156",
+  appId: "1:697216645156:web:b3dc8d33e85d306f2940b1",
+  measurementId: "G-HSKZNP174F"
 };
 
 // Initialize Firebase
@@ -27,6 +28,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
 export const database = getDatabase(app);
 export const storage = getStorage(app);
+export const firestore = getFirestore(app);
 
 
 // Initialize Firebase Authentication and get a reference to the service

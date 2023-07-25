@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import '../style/Message.css'
+import { getFriends } from '../Store/Request';
+import { auth } from '../Firebase';
 
 function Messages() {
   const [messages, setMessages] = useState([]);
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [isPopOpen,setPopOpen] = useState(false)
   const [newMessage, setNewMessage] = useState('');
+  const [friends, setFriends] = useState([]);
+  const currentUserID = auth.currentUser.uid;
 
   useEffect(() => {
     // Fetch messages from the API
@@ -13,62 +18,9 @@ function Messages() {
 
   const fetchMessages = async () => {
     try {
-      // const response = await fetch('https://api.example.com/messages');
-      // const data = await response.json();
-
-      const data = [
-        {
-          id: 1,
-          sender: 'John',
-          content: 'Lorem ipsum dolor sit amet...',
-          timestamp: '2023-06-20T10:30:00'
-        },
-        {
-          id: 2,
-          sender: 'Jane',
-          content: 'Lorem ipsum dolor sit amet...',
-          timestamp: '2023-06-20T12:45:00'
-        },
-        {
-          id: 3,
-          sender: 'July',
-          content: 'Lorem ipsum dolor sit amet asjbdhalhjsbdjhlabsdljahbsdjlahbsdjhasbdjahbsdjahsbdjahsbdjashbdjahsbdjahsbdjahsbdjahsbdjahsbdjhasbdajhsbdjhasbdjahsbdhjab...',
-          timestamp: '2023-06-20T12:45:00'
-        },
-        {
-          id: 4,
-          sender: 'Jane',
-          content: 'Lorem ipsum dolor sit amet...',
-          timestamp: '2023-06-20T12:45:00'
-        },
-        {
-          id: 5,
-          sender: 'Jane',
-          content: 'Lorem ipsum dolor sit amet...',
-          timestamp: '2023-06-20T12:45:00'
-        },
-        {
-          id: 6,
-          sender: 'Jane',
-          content: 'Lorem ipsum dolor sit amet...',
-          timestamp: '2023-06-20T12:45:00'
-        },
-        {
-          id: 7,
-          sender: 'Jane',
-          content: 'Lorem ipsum dolor sit amet...',
-          timestamp: '2023-06-20T12:45:00'
-        },
-        {
-          id: 8,
-          sender: 'Jane',
-          content: 'Lorem ipsum dolor sit amet...',
-          timestamp: '2023-06-20T12:45:00'
-        },
-        // Add more message objects as needed
-      ];
+      const friendsData = await getFriends(currentUserID);
+      setFriends(friendsData) 
     
-      setMessages(data);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
@@ -99,10 +51,23 @@ function Messages() {
     }
   };
 
+  const handleFriendsCardClick = () => {
+    setPopOpen(!isPopOpen)
+  }
+
+  const handleChatButtonClick = (uid,name,username) => {
+    setMessages([{sender:name,content :uid + username}])
+  }
+
   return (
     <div className="message-component">
       <div className="inbox">
+      <div className='inbox-header'>
         <h2 className="inbox-heading">Inbox</h2>
+        <div className='add-new-chat-card' onClick={handleFriendsCardClick}>
+        <i class="fa-sharp fa-solid fa-plus add-new-chat"></i>
+      </div>
+        </div>  
         <ul className="inbox-list">
           {messages.map((message) => (
             <li
@@ -117,6 +82,34 @@ function Messages() {
             </li>
           ))}
         </ul>
+        {isPopOpen && (
+          <div className="popup-container">
+            <div className="popup-content">
+              <button className='close-button' onClick={handleFriendsCardClick}><i className='fa-solid fa-x'></i></button>
+              <h3 className='popup-heading'>Friends List</h3>
+              {Object.keys(friends).length > 0 ? Object.keys(friends).map((uid) => (
+              <div key={uid} className="friendlist-card">
+              <div className="friendlist-card-user-details">
+                <img
+                  className="friendlist-card-profile-picture"
+                  src={friends[uid].profilePic}
+                  alt="Profile"
+                />
+              </div>
+              <div className="friend-details">
+              <h3>
+                {friends[uid].name}{" "}
+              </h3>
+              <p>@{friends[uid].username}</p>
+            </div>
+            <div className="friendlist-card-button-container">
+            <button className='chat-button' onClick={() => handleChatButtonClick(friends[uid].uid,friends[uid].name,friends[uid].username)}>PING</button>
+          </div>
+            </div>
+            )) : <p className="friend-request-message">No Friends yet</p>}
+          </div>
+          </div>
+        )}
       </div>
       <div className="chat-box">
         <h4 className='chat-box-heading'>Messages</h4>      

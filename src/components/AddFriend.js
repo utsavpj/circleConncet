@@ -12,15 +12,16 @@ function AddFriend(props) {
   const handleConfirm = (SendUserid) => {
     if(!isAddBtnClicked){
       const isConnected = confirmRequest(currentUserID, SendUserid);
-
+      setAddBtnClick(true)
       if (isConnected) {
         setTimeout(() => {
-          cancelRequest(currentUserID, SendUserid); // Call removeRequest after 2 seconds
+          cancelRequest(currentUserID, SendUserid); 
+          setAddBtnClick(false);// Call removeRequest after 2 seconds
         }, 2000); // Delay in milliseconds (2 seconds)
       }
 
-        setAddBtnClick(true)
     }
+    
   } 
 
   //To Send frind request

@@ -17,7 +17,7 @@ export const sendRequest = async (currentUserid,SendUserid ) => {
           time: formatteddate,
         });
     
-        toast("Requested");
+        
        
       } catch (error) {
         toast.error("Error while send request", error);
@@ -68,7 +68,7 @@ export const removeRequest = async (currentUserid,SendUserid) => {
     // Remove the request node from the database
     await remove(requestRef);
 
-    toast("Request removed");
+    
   } catch (error) {
     toast.error("Error while removing request", error);
     throw error;
@@ -82,7 +82,7 @@ export const cancelRequest = async (currentUserid,SendUserid) => {
     // Remove the request node from the database
     await remove(requestRef);
 
-    toast("Request removed");
+    
   } catch (error) {
     toast.error("Error while removing request", error);
     throw error;
@@ -103,7 +103,7 @@ export const confirmRequest = async (currentUserid,SendUserid ) => {
         time: formatteddate,
       });
   
-      toast("Connected");
+      
       return true;
      
     } catch (error) {
